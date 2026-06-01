@@ -4,6 +4,7 @@ phases:
   pre_build:
     commands:
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 114614701773.dkr.ecr.ap-south-1.amazonaws.com
+
   build:
     commands:
       - docker build -t my-app-image .
@@ -12,11 +13,8 @@ phases:
   post_build:
     commands:
       - docker push 114614701773.dkr.ecr.ap-south-1.amazonaws.com/my-app-image:latest
-
-  
-      - printf '[{"name":"my-pipeline","imageUri":"%s"}]' 1114614701773.dkr.ecr.ap-south-1.amazonaws.com/my-app-image > imagedefinitions.json
+      - printf '[{"name":"my-pipeline","imageUri":"114614701773.dkr.ecr.ap-south-1.amazonaws.com/my-app-image:latest"}]' > imagedefinitions.json
 
 artifacts:
   files:
     - imagedefinitions.json
-    
