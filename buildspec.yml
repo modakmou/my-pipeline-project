@@ -7,13 +7,13 @@ phases:
 
   build:
     commands:
-      - docker build -t my-app-image .
+      - docker build -t my-app-image:$CODEBUILD_BUILD_NUMBER .
       - docker tag my-app-image:latest 114614701773.dkr.ecr.ap-south-1.amazonaws.com/my-app-image:latest
 
   post_build:
     commands:
       - docker push 114614701773.dkr.ecr.ap-south-1.amazonaws.com/my-app-image:latest
-      - printf '[{"name":"my-pipeline","imageUri":"114614701773.dkr.ecr.ap-south-1.amazonaws.com/my-app-image:latest"}]' > imagedefinitions.json
+      - printf '[{"name":"my-pipeline","imageUri":"114614701773.dkr.ecr.ap-south-1.amazonaws.com/my-app-image:%s"}]' $CODEBUILD_BUILD_NUMBER > imagedefinitions.json
 
 artifacts:
   files:
